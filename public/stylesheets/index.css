@@ -1,0 +1,12 @@
+.todo-list {
+    height: 400px;
+    width: 300px;
+    background-color: #d3e4ff;
+}
+
+.create-login-user {
+    width: 600px;
+}
+body {
+    display: flex;
+}

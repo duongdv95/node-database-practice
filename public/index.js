@@ -1,5 +1,7 @@
 const createUser = document.querySelector(".create-user");
 const loginUser = document.querySelector(".login-user");
+const createTodo = document.querySelector(".todo-form");
+const todoList = document.querySelector(".todo-list");
 
 createUser.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -16,6 +18,16 @@ loginUser.addEventListener("submit", (e) => {
         .then(({ status }) => {
             (status === 200) ? alert("Login succes!") : alert("Login failed!")
         })
+})
+
+createTodo.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const todoText = createTodo.querySelector(".todo").value;
+    if(todoText) {
+        var newTodoElement = `<div>${todoText}</div>`;
+        todoList.insertAdjacentHTML("beforeend", newTodoElement);
+    }
+    createTodo.querySelector(".todo").value = "";
 })
 
 function post (path, data) {

@@ -5,20 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>node-database-practice</title>
+    <link rel="stylesheet" href="/stylesheets/index.css">
 </head>
 <body>
-    <form class="create-user">
-        <h1>Create a new User</h1>
-        <input type="text" class="username" placeholder="username">
-        <input type="password" class="password" placeholder="password">
-        <input type="submit" value="Create user">
-    </form>
-    <form class="login-user">
-        <h1>User login</h1>
-        <input type="text" class="username" placeholder="username">
-        <input type="password" class="password" placeholder="password">
-        <input type="submit" value="Login">
-    </form>
+    <div class="create-login-user">
+        <form class="create-user">
+            <h1>Create a new User</h1>
+            <input type="text" class="username" placeholder="username">
+            <input type="password" class="password" placeholder="password">
+            <input type="submit" value="Create user">
+        </form>
+        <form class="login-user">
+            <h1>User login</h1>
+            <input type="text" class="username" placeholder="username">
+            <input type="password" class="password" placeholder="password">
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+
+    <div class="todo-list">
+        <h2>Todo List</h2>
+        <form class="todo-form">
+            <input type="text" class="todo" placeholder="Enter a todo"/>
+            <input type="submit" value="Add Todo">
+            </form>
+    </div>
     <script src="index.js"></script>
 </body>
 </html>
+
