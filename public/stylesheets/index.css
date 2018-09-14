@@ -4,9 +4,18 @@
     background-color: #d3e4ff;
 }
 
+.todo {
+    display: flex;
+    justify-content: space-between;
+}
 .create-login-user {
     width: 600px;
 }
+
 body {
     display: flex;
+}
+
+.hide-edit-todo-button {
+    display:none;
 }
