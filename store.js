@@ -2,6 +2,17 @@ const crypto = require("crypto");
 const knexfile = require("./knexfile.js");
 const knex = require("knex")(knexfile);
 
+function createTodo ({todo}) {
+    console.log(`Creating todo: ${todo}`);
+    return knex("todos").insert({
+        todos: todo
+    })
+}
+
+function deleteTodo ({todo}) {
+    
+}
+
 function createUser ({username, password}) {
     console.log(`Add user ${username} with password ${password}`)
     const {salt, hash} = saltHashPassword({password});
@@ -43,4 +54,4 @@ function randomString () {
     return crypto.randomBytes(4).toString("hex");
 }
 
-module.exports = {createUser, saltHashPassword, authenticateUser}
+module.exports = {createUser, saltHashPassword, authenticateUser, createTodo}

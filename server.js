@@ -12,6 +12,20 @@ app.get("/todo", (req, res) => {
     res.render("todo");
 })
 
+app.post("/todo", (req, res) => {
+    store.createTodo({
+        todo: req.body.todo
+    })
+    .then(() => {
+        
+        res.sendStatus(200)
+        })
+})
+
+app.delete("/todo/:id", (req, res) => {
+    
+})
+
 app.post("/createUser", (req, res) => {
     store.createUser({
         username: req.body.username,
