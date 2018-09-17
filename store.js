@@ -3,13 +3,17 @@ const knexfile = require("./knexfile.js");
 const knex = require("knex")(knexfile);
 
 function createTodo ({todo}) {
-    console.log(`Creating todo: ${todo}`);
     return knex("todos").insert({
         todos: todo
-    })
+    }).returning("id")
 }
 
-function deleteTodo ({todo}) {
+function deleteTodo ({todoID}) {
+    return knex("todos")
+    .del()
+    .where({
+        id: todoID
+    })
     
 }
 
@@ -54,4 +58,10 @@ function randomString () {
     return crypto.randomBytes(4).toString("hex");
 }
 
-module.exports = {createUser, saltHashPassword, authenticateUser, createTodo}
+module.exports = {createUser, saltHashPassword, authenticateUser, createTodo, deleteTodo}
+
+
+
+
+
+

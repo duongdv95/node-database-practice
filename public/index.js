@@ -39,11 +39,14 @@ loginUser.addEventListener("submit", (e) => {
         })
 })
 
-createTodo.addEventListener("submit", (e) => {
+createTodo.addEventListener("submit", async (e) => {
     e.preventDefault();
     const todo = createTodo.querySelector(".todo-input").value;
     if(todo) {
-        var newTodoElement = `<div class="todo">
+        const response = await request("POST", "/todo", {todo})
+        const responseJSON = await response.json()
+        const todoID = responseJSON.ID
+        var newTodoElement = `<div class="todo" data-todoID="${todoID}">
                                    <div>
                                         ${todo}
                                    </div>
@@ -55,14 +58,16 @@ createTodo.addEventListener("submit", (e) => {
         todoList.insertAdjacentHTML("beforeend", newTodoElement);
     }
     createTodo.querySelector(".todo-input").value = "";
-    request("POST", "/todo", {todo});
 })
 
 document.addEventListener("click", function(e) {
     if(e.target && e.target.className == "delete-todo-button"){
         var getTodo = e.target.parentElement.parentElement;
+        var todoID = getTodo.dataset.todoid;
+        request("DELETE", `/todo/${todoID}`, {todoID})
         getTodo.remove();
     }
+    
 })
 
 document.addEventListener("click", function(e) {
@@ -101,4 +106,7 @@ function request (type, path, data) {
         body: JSON.stringify(data),
     })
 }
+
+
+
 

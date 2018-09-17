@@ -12,18 +12,25 @@ app.get("/todo", (req, res) => {
     res.render("todo");
 })
 
+// POST ROUTE
 app.post("/todo", (req, res) => {
     store.createTodo({
         todo: req.body.todo
     })
-    .then(() => {
-        
-        res.sendStatus(200)
+    .then(([id]) => {
+        res.status(200)
+        res.send({ID: id})
         })
 })
 
+// DELETE ROUTE
 app.delete("/todo/:id", (req, res) => {
-    
+    store.deleteTodo({
+        todoID: req.body.todoID
+    })
+    .then(() => {
+        res.sendStatus(200)
+    })
 })
 
 app.post("/createUser", (req, res) => {
@@ -32,9 +39,9 @@ app.post("/createUser", (req, res) => {
         password: req.body.password
     })
     .then(() => {
-        
+
         res.sendStatus(200)
-        })
+    })
 })
 
 app.post("/login", (req, res) => {
