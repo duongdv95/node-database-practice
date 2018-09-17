@@ -8,8 +8,13 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.json());
 
-app.get("/todo", (req, res) => {
-    res.render("todo");
+app.get("/todo", async (req, res) => {
+    const todos = await store.getTodo();
+    const todosArray = todos.map(obj => {
+        var todo = {id: obj.id, todos: obj.todos}
+        return todo
+    })
+    res.render("todo", {todosArray});
 })
 
 // POST ROUTE
@@ -21,6 +26,17 @@ app.post("/todo", (req, res) => {
         res.status(200)
         res.send({ID: id})
         })
+})
+
+// PUT ROUTE
+app.put("/todo/:id", (req, res) => {
+    store.updateTodo({
+        todo: req.body.todo,
+        todoID: req.body.todoID
+    })
+    .then(() => {
+        res.sendStatus(200)
+    })
 })
 
 // DELETE ROUTE

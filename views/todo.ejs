@@ -5,8 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>node-database-practice</title>
+    <link rel="stylesheet" href="/stylesheets/index.css">
 </head>
 <body>
-    <h1>Todo List</h1>
+    <div class="todo-list">
+        <h2>Todo List</h2>
+        <form class="todo-form">
+            <input type="text" class="todo-input" placeholder="Enter a todo"/>
+            <input type="submit" value="Add Todo">
+        </form>
+        <% todosArray.forEach(function(todo) { %>
+        <div class="todo" data-todoID="<%=todo.id%>">
+           <div>
+                <%=todo.todos%>
+           </div>
+           <div>
+                <input type="submit" value="edit" class="edit-todo-button"></input>
+                <input type="submit" value="x" class="delete-todo-button"></input>
+           </div>
+        </div>
+        <% }) %>
+    </div>
+    <script src="todo.js"></script>
 </body>
 </html>
