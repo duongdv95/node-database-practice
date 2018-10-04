@@ -1,12 +1,4 @@
-const createUser = document.querySelector(".create-user");
 const loginUser = document.querySelector(".login-user");
-
-createUser.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const username = createUser.querySelector(".username").value;
-    const password = createUser.querySelector(".password").value;
-    request("POST", "/createUser", {username, password});
-})
 
 loginUser.addEventListener("submit", (e) => {
     e.preventDefault();

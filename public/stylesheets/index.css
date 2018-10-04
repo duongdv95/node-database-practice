@@ -8,14 +8,16 @@
     display: flex;
     justify-content: space-between;
 }
-.create-login-user {
-    width: 600px;
-}
-
-body {
-    display: flex;
-}
 
 .hide-edit-todo-button {
     display:none;
+}
+
+.todo-link {
+    text-decoration: none;
+    color: blue;
+}
+
+.todo-link:hover {
+    background-color: gray;
 }
