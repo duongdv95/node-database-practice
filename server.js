@@ -20,8 +20,8 @@ app.use(function(req, res, next) {
   delete req.session.error;
   delete req.session.success;
   res.locals.message = '';
-  if (err) res.locals.message = '<p class="msg error">' + err + '</p>';
-  if (msg) res.locals.message = '<p class="msg success">' + msg + '</p>';
+  if (err) res.locals.message = err;
+  if (msg) res.locals.message = msg;
   next();
 })
 
@@ -34,18 +34,6 @@ function restrict(req, res, next) {
   }
 }
 
-app.get('/test', function(req, res, next) {
-    req.session.reload(function(err){
-        console.log(err)
-    })
-  if (req.session.isLoggedIn) {
-    res.setHeader('Content-Type', 'text/html')
-    res.write('<p>isLoggedIn: ' + req.session.isLoggedIn + '</p>')
-    res.end()
-  } else {
-    res.end('Not logged in')
-  }
-})
 
 app.get("/todo", async (req, res) => {
     const todos = await store.getTodo();
@@ -62,12 +50,22 @@ app.get("/", (req, res) => {
 
 app.get("/login", (req, res) => {
     res.render("login");
-})
+});
 
 app.get("/register", (req, res) => {
     res.render("register");
 })
 
+app.get('/logout', function(req, res){
+  req.session.destroy(function(){
+    res.redirect('/');
+  });
+});
+
+app.get("/secret", restrict, function(req, res) {
+    res.render("secret");
+    
+})
 // POST ROUTE
 app.post("/todo", (req, res) => {
     store.createTodo({
@@ -106,26 +104,34 @@ app.post("/createUser", (req, res) => {
         password: req.body.password
     })
     .then(() => {
-
         res.sendStatus(200)
     })
 })
 
 app.post("/login", async (req, res) => {
-    store.authenticateUser({
+    const authenticationData = await store.authenticateUser({
         username: req.body.username,
         password: req.body.password
     })
-    .then(({success}) => {
-        (success) ? res.sendStatus(200) : res.sendStatus(401)
-          if (success) {
-              req.session.isLoggedIn = true;
-              console.log(`isLoggedIn = ${req.session.isLoggedIn}`);
-          } else {
-              req.session.isLoggedIn = false;
-              console.log(`isLoggedIn = ${req.session.isLoggedIn}`);
-          }
+    
+    const success = authenticationData.success;
+    const user = authenticationData.user;
+    if (success) {
+        req.session.regenerate(function(err) {
+            console.log(err)
+        req.session.user = user;
+        req.session.success = "You are logged in! You can view secret page now."
+        console.log(req.session.success);
+        res.setHeader("redirected", "/todo");
+        res.sendStatus(200);
         })
+    } else {
+        req.session.error = "Authentication failed";
+        console.log(req.session.error);
+        res.setHeader("redirected", "/login");
+        res.sendStatus(401);
+    }
+    
 })
 
 app.listen(process.env.PORT, process.env.IP, () => {

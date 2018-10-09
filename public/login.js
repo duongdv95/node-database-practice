@@ -5,8 +5,15 @@ loginUser.addEventListener("submit", (e) => {
     const username = loginUser.querySelector(".username").value;
     const password = loginUser.querySelector(".password").value;
     request("POST", "/login", {username, password})
-        .then(({ status }) => {
-            (status === 200) ? alert("Login succes!") : alert("Login failed!")
+        .then((response) => {
+            if (response.status === 200) {
+                console.log("Login succes!")
+                window.location.assign("/todo");
+            }
+            else {
+                console.log("Login failed!")
+                window.location.assign("/login");
+            }
         })
 })
 

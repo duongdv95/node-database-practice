@@ -46,12 +46,12 @@ function createUser ({username, password}) {
 async function authenticateUser({ username, password }) {
     console.log(`Authenticating user ${username}`);
     const [user] = await knex("user").where({username});
-    if(!user) return {success: false}
+    if(!user) return {success: false, user: null}
     const {hash} = saltHashPassword({
         password, 
         salt: user.salt
         })
-    return {success: hash === user.encrypted_password}
+    return {success: hash === user.encrypted_password, user: username}
         
 }
 
