@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
   next();
 })
 
-function restrict(req, res, next) {
+function isLoggedIn(req, res, next) {
   if (req.session.user) {
     next();
   } else {
@@ -34,8 +34,7 @@ function restrict(req, res, next) {
   }
 }
 
-
-app.get("/todo", async (req, res) => {
+app.get("/todo", isLoggedIn, async (req, res) => {
     const todos = await store.getTodo();
     const todosArray = todos.map(obj => {
         var todo = {id: obj.id, todos: obj.todos}
@@ -62,19 +61,19 @@ app.get('/logout', function(req, res){
   });
 });
 
-app.get("/secret", restrict, function(req, res) {
+app.get("/secret", isLoggedIn, function(req, res) {
     res.render("secret");
     
 })
 // POST ROUTE
-app.post("/todo", (req, res) => {
-    store.createTodo({
-        todo: req.body.todo
-    })
-    .then(([id]) => {
+app.post("/todo", async (req, res) => {
+    const [userData] = await store.getUserID(req.session.user);
+    const userID = userData.id;
+    const [id] = await store.createTodo({todo: req.body.todo})
+    if(id) {
         res.status(200)
-        res.send({ID: id})
-        })
+        res.send({ID: id, userID})
+    }
 })
 
 // PUT ROUTE
@@ -98,7 +97,7 @@ app.delete("/todo/:id", (req, res) => {
     })
 })
 
-app.post("/createUser", (req, res) => {
+app.post("/createUser", isLoggedIn, (req, res) => {
     store.createUser({
         username: req.body.username,
         password: req.body.password
@@ -117,13 +116,12 @@ app.post("/login", async (req, res) => {
     const success = authenticationData.success;
     const user = authenticationData.user;
     if (success) {
-        req.session.regenerate(function(err) {
-            console.log(err)
-        req.session.user = user;
-        req.session.success = "You are logged in! You can view secret page now."
-        console.log(req.session.success);
-        res.setHeader("redirected", "/todo");
-        res.sendStatus(200);
+        req.session.regenerate(function() {
+            req.session.user = user;
+            req.session.success = "You are logged in! You can view secret page now."
+            console.log(req.session.success);
+            res.setHeader("redirected", "/todo");
+            res.sendStatus(200);
         })
     } else {
         req.session.error = "Authentication failed";

@@ -33,6 +33,15 @@ function deleteTodo ({todoID}) {
     })
 }
 
+function getUserID (user) {
+    return knex("user")
+    .select("id")
+    .where({
+        username:user
+        
+    })
+}
+
 function createUser ({username, password}) {
     console.log(`Add user ${username} with password ${password}`)
     const {salt, hash} = saltHashPassword({password});
@@ -74,7 +83,7 @@ function randomString () {
     return crypto.randomBytes(4).toString("hex");
 }
 
-module.exports = {createUser, saltHashPassword, authenticateUser, createTodo, deleteTodo, updateTodo, getTodo}
+module.exports = {createUser, saltHashPassword, authenticateUser, createTodo, deleteTodo, updateTodo, getTodo, getUserID}
 
 
 
