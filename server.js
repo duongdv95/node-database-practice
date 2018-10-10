@@ -35,7 +35,9 @@ function isLoggedIn(req, res, next) {
 }
 
 app.get("/todo", isLoggedIn, async (req, res) => {
-    const todos = await store.getTodo();
+    const [userData] = await store.getUserID(req.session.user);
+    const userID = userData.id;
+    const todos = await store.getTodo({userID});
     const todosArray = todos.map(obj => {
         var todo = {id: obj.id, todos: obj.todos}
         return todo
@@ -69,7 +71,7 @@ app.get("/secret", isLoggedIn, function(req, res) {
 app.post("/todo", async (req, res) => {
     const [userData] = await store.getUserID(req.session.user);
     const userID = userData.id;
-    const [id] = await store.createTodo({todo: req.body.todo})
+    const [id] = await store.createTodo({todo: req.body.todo, userID})
     if(id) {
         res.status(200)
         res.send({ID: id, userID})

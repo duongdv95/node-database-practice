@@ -2,18 +2,22 @@ const crypto = require("crypto");
 const knexfile = require("./knexfile.js");
 const knex = require("knex")(knexfile);
 
-function getTodo () {
+function getTodo ({userID}) {
     return knex("todos")
+    .where({user_id: userID})
     .select("id", "todos")
     // .then((todos) => {
     //     console.log(JSON.stringify(todos))
     // })
 }
 
-function createTodo ({todo}) {
-    return knex("todos").insert({
-        todos: todo
-    }).returning("id")
+function createTodo ({todo, userID}) {
+    return knex("todos")
+    .insert({
+        todos: todo,
+        user_id: userID
+    })
+    .returning("id")
 }
 
 function updateTodo ({todo, todoID}) {
