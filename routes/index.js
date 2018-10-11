@@ -25,11 +25,18 @@ router.post("/createUser", async (req, res) => {
         console.log("Missing Username/Password")
         return
     }
-    await store.createUser({
-        username: req.body.username,
-        password: req.body.password
-    })
-    res.sendStatus(200)
+    const {userFound} = await store.checkDuplicateUsername({username: req.body.username});
+    if(!userFound){
+        await store.createUser({
+            username: req.body.username,
+            password: req.body.password
+        })
+        res.sendStatus(200)   
+    } else {
+        console.log("username taken");
+        return
+    }
+
 })
 
 router.post("/login", async (req, res) => {

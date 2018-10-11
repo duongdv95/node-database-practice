@@ -39,8 +39,12 @@ function getUserID (user) {
     .select("id")
     .where({
         username:user
-        
     })
+}
+
+async function checkDuplicateUsername ({username}) {
+    const [userData] = await knex("user").select("username").where({username});
+    return userData ? {userFound: userData.username} : {userFound: null};
 }
 
 function createUser ({username, password}) {
@@ -84,7 +88,7 @@ function randomString () {
     return crypto.randomBytes(4).toString("hex");
 }
 
-module.exports = {createUser, saltHashPassword, authenticateUser, createTodo, deleteTodo, updateTodo, getTodo, getUserID}
+module.exports = {createUser, saltHashPassword, authenticateUser, createTodo, deleteTodo, updateTodo, getTodo, getUserID, checkDuplicateUsername}
 
 
 
