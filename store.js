@@ -6,9 +6,6 @@ function getTodo ({userID}) {
     return knex("todos")
     .where({user_id: userID})
     .select("id", "todos")
-    // .then((todos) => {
-    //     console.log(JSON.stringify(todos))
-    // })
 }
 
 function createTodo ({todo, userID}) {
@@ -88,7 +85,6 @@ function randomString () {
 }
 
 module.exports = {createUser, saltHashPassword, authenticateUser, createTodo, deleteTodo, updateTodo, getTodo, getUserID}
-
 
 
 

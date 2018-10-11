@@ -1,10 +1,18 @@
 const createUser = document.querySelector(".create-user");
 
-createUser.addEventListener("submit", (e) => {
+createUser.addEventListener("submit", async (e) => {
     e.preventDefault();
     const username = createUser.querySelector(".username").value;
     const password = createUser.querySelector(".password").value;
-    request("POST", "/createUser", {username, password});
+    const response = await request("POST", "/createUser", {username, password});
+    if (response.status === 200) {
+        await request("POST", "/login", {username, password});
+        console.log("Register succes!")
+        window.location.assign("/todo");
+    }
+    else {
+        console.log("Register failed!");
+    }
 })
 
 function request (type, path, data) {
