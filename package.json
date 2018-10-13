@@ -1,5 +1,5 @@
 {
-  "name": "node-database-practice",
+  "name": "todo-mysql-app",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
