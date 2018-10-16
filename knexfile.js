@@ -1,17 +1,22 @@
-const config = null;
+const config = "";
+
 try {
   const config = require("./config.js");
-} catch(e) {
-
+  module.exports = database(config.db_host.HOST, config.db_host.PORT, config.db_host.USER, config.db_host.PASSWORD, config.db_host.DATABASE)
+}
+catch (e) {
+  module.exports = database(process.env.DBHOST, process.env.DBPORT, process.env.DBUSER, process.env.DBPASSWORD, process.env.DBDATABASE)
 }
 
-module.exports = {
-  client: 'mysql',
-  connection: {
-    host: process.env.DBHOST || config.db_host.HOST,
-    port: process.env.DBPORT || config.db_host.PORT,
-    user: process.env.DBUSER || config.db_host.USER,
-    password: process.env.DBPASSWORD || config.db_host.PASSWORD,
-    database: process.env.DBDATABASE || config.db_host.DATABASE
+function database(host, port, user, password, database) {
+  return {
+    client: 'mysql',
+    connection: {
+      host,
+      port,
+      user,
+      password,
+      database
+    }
   }
 }
