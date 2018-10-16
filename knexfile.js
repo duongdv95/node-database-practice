@@ -1,4 +1,9 @@
-const config = require("./config.js");
+const config = null;
+try {
+  const config = require("./config.js");
+} catch(e) {
+
+}
 
 module.exports = {
   client: 'mysql',
