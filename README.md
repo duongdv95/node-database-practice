@@ -3,6 +3,7 @@
 I created a todo app with the goal of practicing back end development using MySQL. This will help me complete the backend for
 a [trello clone](https://github.com/duongdv95/trello-clone) I am attempting to make.
 
+[Todo app link](https://todo-mysql-app.herokuapp.com/)
 ## Getting Started
 
 git clone https://github.com/duongdv95/todo-mysql-app.git
